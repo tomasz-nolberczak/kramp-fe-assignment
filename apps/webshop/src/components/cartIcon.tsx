@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useContext } from 'react';
-import { CartContext } from '../pages/_app';
+import { CartContext } from '../contexts/CartContext';
 import styles from './cartIcon.module.css';
 
 export function CartIcon() {

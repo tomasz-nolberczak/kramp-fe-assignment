@@ -1,4 +1,4 @@
-export const GET_PRODUCTS_QUERY = `query GetProducts($ids: [ID!]!) {
+export const QUERY_GET_PRODUCTS = `query GetProducts($ids: [ID!]!) {
               products(ids: $ids) {
                 id
                 name

@@ -3,44 +3,39 @@ import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import styles from './[id].module.css';
 import { formatPrice } from '../../utils/formatPrice';
+import { GetServerSideProps } from 'next';
+import { Product } from '../../types';
+import { fetchGraphQL } from '../../utils/fetchGraphQL';
+import { QUERY_GET_PRODUCT } from '../../queries/getProduct';
+import { notFound } from 'next/navigation';
 
-var GRAPHQL_URL = 'http://localhost:4000/graphql';
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const productId = params?.id || '';
 
-export default function ProductPage() {
-  const router = useRouter();
+  if (!productId) {
+    return notFound();
+  }
+
+  const { product } = await fetchGraphQL<{ product: Product }>(
+    QUERY_GET_PRODUCT,
+    {
+      id: productId,
+    },
+  );
+
+  return {
+    props: {
+      product,
+    },
+  };
+};
+
+interface SingleProductParams {
+  product: Product;
+}
+
+export default function ProductPage({ product }: SingleProductParams) {
   const { cart: items, addToCart } = useContext(CartContext);
-
-  const [product, setProduct] = useState<any>(null);
-  useEffect(() => {
-    if (!router.query.id) return;
-
-    fetch(GRAPHQL_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: `
-          query GetProduct($id: ID!) {
-            product(id: $id) {
-              id
-              name
-              description
-              price
-              category
-              imageUrl
-              stock
-              createdAt
-            }
-          }
-        `,
-        variables: { id: router.query.id },
-      }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log('product loaded:', data);
-        setProduct(data.data.product);
-      });
-  }, [items]);
 
   const handleAddToCart = () => {
     if (!product) return;
