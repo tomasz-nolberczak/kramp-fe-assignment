@@ -4,6 +4,7 @@ import styles from './index.module.css';
 import { fetchGraphQL } from '../utils/fetchGraphQL';
 import { QUERY_GET_PRODUCTS } from '../queries/getProducts';
 import { Product } from '../types';
+import Link from 'next/link';
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const { products } = await fetchGraphQL<{ products: Product[] }>(
