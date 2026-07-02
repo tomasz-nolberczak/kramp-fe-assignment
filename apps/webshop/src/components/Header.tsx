@@ -58,6 +58,10 @@ export function Header() {
       setIsOpen(false);
     };
     document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      removeEventListener('click', handleOutsideClick);
+    };
   }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -83,19 +87,27 @@ export function Header() {
         <nav className={styles.nav}>
           <Link
             href="/"
-            className={isActivePage('/') && router.pathname === '/' ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/') && router.pathname === '/'
+                ? styles.activeLink
+                : styles.navLink
+            }
           >
             Home
           </Link>
           <Link
             href="/search"
-            className={isActivePage('/search') ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/search') ? styles.activeLink : styles.navLink
+            }
           >
             Products
           </Link>
           <Link
             href="/checkout"
-            className={isActivePage('/checkout') ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/checkout') ? styles.activeLink : styles.navLink
+            }
           >
             Checkout
           </Link>
@@ -112,7 +124,9 @@ export function Header() {
             onClick={e => e.stopPropagation()}
           />
           {truncatedQuery && query.length > 30 && (
-            <span className={styles.truncatedHint}>Searching: {truncatedQuery}…</span>
+            <span className={styles.truncatedHint}>
+              Searching: {truncatedQuery}…
+            </span>
           )}
           {isOpen && (
             <SearchDialog
