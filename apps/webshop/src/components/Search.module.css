@@ -1,0 +1,26 @@
+.searchWrapper {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  margin-left: auto;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: #e63329;
+}
+
+.truncatedHint {
+  display: block;
+  font-size: 11px;
+  color: #999;
+  margin-top: 2px;
+}
