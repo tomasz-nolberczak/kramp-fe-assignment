@@ -1,32 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './cartIcon.module.css';
+import { CartContext } from '../pages/_app';
+import Link from 'next/link';
 
-interface CartIconProps {
-  count: number;
-}
-
-export function CartIcon({ count }: CartIconProps) {
-  const router = useRouter();
-  const [label, setLabel] = useState('Cart');
-
-  useEffect(() => {
-    if (count > 0) {
-      setLabel(`Cart (${count})`);
-    } else {
-      setLabel('Cart');
-    }
-  }, [count]);
+export function CartIcon() {
+  const { totalItems } = useContext(CartContext);
 
   return (
-    <div
-      onClick={() => router.push('/checkout')}
-      className={styles.cartIcon}
-    >
-      <span className={styles.label}>{label}</span>
-      {count > 0 && (
-        <span className={styles.badge}>{count}</span>
-      )}
-    </div>
+    <Link href="/checkout" className={styles.cartIcon}>
+      <span className={styles.label}>
+        {totalItems > 0 ? `Cart (${totalItems})` : `Cart`}
+      </span>
+      {totalItems > 0 && <span className={styles.badge}>{totalItems}</span>}
+    </Link>
   );
 }

@@ -12,7 +12,6 @@ var GRAPHQL_URL = 'http://localhost:4000/graphql';
 
 export function Header() {
   const router = useRouter();
-  const { cart } = useContext(CartContext);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -126,7 +125,7 @@ export function Header() {
           )}
         </div>
 
-        <CartIcon count={cart.totalItems} />
+        <CartIcon />
       </div>
     </header>
   );
