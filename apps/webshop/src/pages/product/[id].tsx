@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../_app';
+import { CartContext } from '../../contexts/CartContext';
 import styles from './[id].module.css';
 import { formatPrice } from '../../utils/formatPrice';
 
@@ -8,7 +8,8 @@ var GRAPHQL_URL = 'http://localhost:4000/graphql';
 
 export default function ProductPage() {
   const router = useRouter();
-  const { cart } = useContext(CartContext) as any;
+  const { cart: items, addToCart } = useContext(CartContext);
+
   const [product, setProduct] = useState<any>(null);
   useEffect(() => {
     if (!router.query.id) return;
@@ -39,13 +40,13 @@ export default function ProductPage() {
         console.log('product loaded:', data);
         setProduct(data.data.product);
       });
-  }, [cart]);
+  }, [items]);
 
   const handleAddToCart = () => {
     if (!product) return;
 
     const currentItems = [
-      ...(cart.cart || []),
+      ...(items || []),
       {
         productId: product.id,
         name: product.name,
@@ -59,7 +60,7 @@ export default function ProductPage() {
     }
     console.log('cart total after add:', runningTotal);
 
-    cart.addToCart({
+    addToCart({
       productId: product.id,
       name: product.name,
       price: product.price,

@@ -12,7 +12,10 @@ export function useCart() {
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   useEffect(() => {
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const total = cart.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
     setTotalPrice(total);
   }, [cart]);
 
@@ -22,7 +25,9 @@ export function useCart() {
     }
   });
 
-  const addToCart = (item: Omit<CartItem, 'productId'> & { productId: string }) => {
+  const addToCart = (
+    item: Omit<CartItem, 'productId'> & { productId: string },
+  ) => {
     const id = uuidv4();
     console.log('adding to cart, entry id:', id);
 
@@ -30,7 +35,9 @@ export function useCart() {
       const existing = prev.find(i => i.productId === item.productId);
       if (existing) {
         return prev.map(i =>
-          i.productId === item.productId ? { ...i, quantity: i.quantity + 1 } : i
+          i.productId === item.productId
+            ? { ...i, quantity: i.quantity + 1 }
+            : i,
         );
       }
       return [...prev, { ...item }];

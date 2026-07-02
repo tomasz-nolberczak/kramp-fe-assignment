@@ -1,16 +1,14 @@
 import { useContext, useState } from 'react';
 import Link from 'next/link';
-import { CartContext } from './_app';
+import { CartContext } from '../contexts/CartContext';
 import styles from './checkout.module.css';
 import { formatPrice } from '../utils/formatPrice';
 
 export default function CheckoutPage() {
-  const { cart } = useContext(CartContext) as any;
+  const { cart: items, clearCart } = useContext(CartContext);
   const [confirmed, setConfirmed] = useState(false);
 
   const handlePlaceOrder = () => {
-    const items = cart.cart || [];
-
     const subtotals = items.map((item: any) => item.price * item.quantity);
     const total = subtotals.reduce((a: number, b: number) => a + b, 0);
     const tax = subtotals.reduce((a: number, b: number) => a + b * 0.21, 0);
@@ -28,7 +26,7 @@ export default function CheckoutPage() {
       shipping,
     );
 
-    cart.clearCart();
+    clearCart();
     setConfirmed(true);
   };
 
@@ -44,8 +42,6 @@ export default function CheckoutPage() {
       </div>
     );
   }
-
-  const items = cart.cart || [];
 
   return (
     <div className={styles.page}>
