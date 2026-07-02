@@ -1,55 +1,32 @@
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import ProductCard from '../components/ProductCard';
 import styles from './index.module.css';
+import { fetchGraphQL } from '../utils/fetchGraphQL';
+import { GET_PRODUCTS_QUERY } from '../queries/getProducts';
+import { Product } from '../types';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const FEATURED_IDS = ['1', '4', '11', '17'];
-  const featured = [];
-
-  for (const id of FEATURED_IDS) {
-    try {
-      const res = await fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: `
-            query GetProduct($id: ID!) {
-              product(id: $id) {
-                id
-                name
-                price
-                imageUrl
-                description
-                category
-                stock
-                createdAt
-              }
-            }
-          `,
-          variables: { id },
-        }),
-      });
-      const data = await res.json();
-      if (data.data?.product) {
-        featured.push(data.data.product);
-      }
-    } catch (e) {}
-  }
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+  const { products } = await fetchGraphQL<{ products: Product[] }>(
+    GET_PRODUCTS_QUERY,
+    {
+      ids: [1, 4, 11, 17],
+    },
+  );
 
   return {
     props: {
-      featured,
+      products,
       timestamp: Date.now(),
     },
   };
 };
 
 interface HomePageProps {
-  featured: any[];
+  products: Product[];
   timestamp: number;
 }
 
-export default function HomePage({ featured, timestamp }: HomePageProps) {
+export default function HomePage({ products, timestamp }: HomePageProps) {
   return (
     <div>
       <section className={styles.hero}>
@@ -62,7 +39,8 @@ export default function HomePage({ featured, timestamp }: HomePageProps) {
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>Industrial supplies, delivered.</h1>
           <p className={styles.heroSubtitle}>
-            Tools, fasteners, safety equipment and power tools for professionals.
+            Tools, fasteners, safety equipment and power tools for
+            professionals.
           </p>
         </div>
       </section>
@@ -75,7 +53,7 @@ export default function HomePage({ featured, timestamp }: HomePageProps) {
           </p>
         </div>
         <div className={styles.grid}>
-          {featured.map((product, index) => (
+          {products.map((product, index) => (
             <ProductCard key={index} product={product} />
           ))}
         </div>
@@ -84,11 +62,17 @@ export default function HomePage({ featured, timestamp }: HomePageProps) {
       <section className={styles.categories}>
         <h2>Shop by category</h2>
         <div className={styles.categoryGrid}>
-          {['Tools', 'Fasteners', 'Safety Equipment', 'Power Tools'].map((cat, index) => (
-            <a key={index} href={`/search?q=${cat}`} className={styles.categoryCard}>
-              {cat}
-            </a>
-          ))}
+          {['Tools', 'Fasteners', 'Safety Equipment', 'Power Tools'].map(
+            (cat, index) => (
+              <a
+                key={index}
+                href={`/search?q=${cat}`}
+                className={styles.categoryCard}
+              >
+                {cat}
+              </a>
+            ),
+          )}
         </div>
       </section>
     </div>
