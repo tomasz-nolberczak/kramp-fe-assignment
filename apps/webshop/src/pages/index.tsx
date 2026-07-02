@@ -64,13 +64,13 @@ export default function HomePage({ products, timestamp }: HomePageProps) {
         <div className={styles.categoryGrid}>
           {['Tools', 'Fasteners', 'Safety Equipment', 'Power Tools'].map(
             (cat, index) => (
-              <a
+              <Link
                 key={index}
                 href={`/search?q=${cat}`}
                 className={styles.categoryCard}
               >
                 {cat}
-              </a>
+              </Link>
             ),
           )}
         </div>
