@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { QUERY_SEARCH_PRODUCTS } from '../queries/searchProducts';
 import { Product } from '../types';
 import { fetchGraphQL } from '../utils/fetchGraphQL';
+import { useDebounce } from '../hooks/useDebounce';
 import styles from './Search.module.css';
 import { SearchDialog } from './SearchDialog';
 
@@ -12,22 +13,24 @@ export default function Search() {
   const [results, setResults] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  const debouncedQuery = useDebounce(query, 300);
+
   useEffect(() => {
     setIsOpen(results.length > 0);
   }, [results]);
 
   useEffect(() => {
-    if (!query) {
+    if (!debouncedQuery) {
       setResults([]);
       return;
     }
 
     fetchGraphQL<{ searchProducts: Product[] }>(QUERY_SEARCH_PRODUCTS, {
-      q: query,
+      q: debouncedQuery,
     }).then(data => {
       setResults(data.searchProducts.slice(0, 5));
     });
-  }, [query]);
+  }, [debouncedQuery]);
 
   useEffect(() => {
     const handleOutsideClick = () => {
