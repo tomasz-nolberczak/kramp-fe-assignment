@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import _ from 'lodash';
-import { CartContext } from '../pages/_app';
+import { CartContext } from '../contexts/CartContext';
 import { SearchDialog } from './SearchDialog';
 import { CartIcon } from './cartIcon';
 import { useDebounce } from '../hooks/useDebounce';
@@ -12,7 +12,15 @@ var GRAPHQL_URL = 'http://localhost:4000/graphql';
 
 export function Header() {
   const router = useRouter();
-  const { cart } = useContext(CartContext);
+  const cartContext = useContext(CartContext);
+  const cart = cartContext ?? {
+    cart: [],
+    addToCart: () => {},
+    removeFromCart: () => {},
+    clearCart: () => {},
+    totalItems: 0,
+    totalPrice: 0,
+  };
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -83,19 +91,27 @@ export function Header() {
         <nav className={styles.nav}>
           <Link
             href="/"
-            className={isActivePage('/') && router.pathname === '/' ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/') && router.pathname === '/'
+                ? styles.activeLink
+                : styles.navLink
+            }
           >
             Home
           </Link>
           <Link
             href="/search"
-            className={isActivePage('/search') ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/search') ? styles.activeLink : styles.navLink
+            }
           >
             Products
           </Link>
           <Link
             href="/checkout"
-            className={isActivePage('/checkout') ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/checkout') ? styles.activeLink : styles.navLink
+            }
           >
             Checkout
           </Link>
@@ -112,7 +128,9 @@ export function Header() {
             onClick={e => e.stopPropagation()}
           />
           {truncatedQuery && query.length > 30 && (
-            <span className={styles.truncatedHint}>Searching: {truncatedQuery}…</span>
+            <span className={styles.truncatedHint}>
+              Searching: {truncatedQuery}…
+            </span>
           )}
           {isOpen && (
             <SearchDialog

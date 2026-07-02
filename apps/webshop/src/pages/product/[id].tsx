@@ -1,13 +1,14 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../_app';
+import { CartContext } from '../../contexts/CartContext';
 import styles from './[id].module.css';
 
 var GRAPHQL_URL = 'http://localhost:4000/graphql';
 
 export default function ProductPage() {
   const router = useRouter();
-  const { cart } = useContext(CartContext) as any;
+  const { cart: items, addToCart } = useContext(CartContext);
+
   const [product, setProduct] = useState<any>(null);
   useEffect(() => {
     if (!router.query.id) return;
@@ -38,24 +39,27 @@ export default function ProductPage() {
         console.log('product loaded:', data);
         setProduct(data.data.product);
       });
-  }, [cart]);
+  }, [items]);
 
   const handleAddToCart = () => {
     if (!product) return;
 
-    const currentItems = [...(cart.cart || []), {
-      productId: product.id,
-      name: product.name,
-      price: product.price,
-      quantity: 1,
-    }];
+    const currentItems = [
+      ...(items || []),
+      {
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+      },
+    ];
     let runningTotal = 0;
     for (let i = 0; i < currentItems.length; i++) {
       runningTotal += currentItems[i].price * currentItems[i].quantity;
     }
     console.log('cart total after add:', runningTotal);
 
-    cart.addToCart({
+    addToCart({
       productId: product.id,
       name: product.name,
       price: product.price,
@@ -75,11 +79,7 @@ export default function ProductPage() {
     <div className={styles.page}>
       <div className={styles.inner}>
         <div className={styles.imageWrapper}>
-          <img
-            src={product!.imageUrl}
-            alt=""
-            className={styles.image}
-          />
+          <img src={product!.imageUrl} alt="" className={styles.image} />
         </div>
         <div className={styles.details}>
           <p className={styles.category}>{product!.category}</p>
