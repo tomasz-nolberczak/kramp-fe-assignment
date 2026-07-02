@@ -12,15 +12,7 @@ var GRAPHQL_URL = 'http://localhost:4000/graphql';
 
 export function Header() {
   const router = useRouter();
-  const cartContext = useContext(CartContext);
-  const cart = cartContext ?? {
-    cart: [],
-    addToCart: () => {},
-    removeFromCart: () => {},
-    clearCart: () => {},
-    totalItems: 0,
-    totalPrice: 0,
-  };
+  const { cart } = useContext(CartContext);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
