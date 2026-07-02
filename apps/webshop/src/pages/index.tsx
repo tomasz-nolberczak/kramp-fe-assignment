@@ -1,48 +1,17 @@
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import ProductCard from '../components/ProductCard';
 import styles from './index.module.css';
 import { fetchGraphQL } from '../utils/fetchGraphQL';
 import { GET_PRODUCTS_QUERY } from '../queries/getProducts';
 import { Product } from '../types';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const FEATURED_IDS = ['1', '4', '11', '17'];
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const { products } = await fetchGraphQL<{ products: Product[] }>(
     GET_PRODUCTS_QUERY,
     {
       ids: [1, 4, 11, 17],
     },
   );
-
-  // for (const id of FEATURED_IDS) {
-  //   try {
-  //     const res = await fetch('http://localhost:4000/graphql', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         query: `
-  //           query GetProduct($id: ID!) {
-  //             product(id: $id) {
-  //               id
-  //               name
-  //               price
-  //               imageUrl
-  //               description
-  //               category
-  //               stock
-  //               createdAt
-  //             }
-  //           }
-  //         `,
-  //         variables: { id },
-  //       }),
-  //     });
-  //     const data = await res.json();
-  //     if (data.data?.product) {
-  //       featured.push(data.data.product);
-  //     }
-  //   } catch (e) {}
-  // }
 
   return {
     props: {
@@ -55,11 +24,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
 interface HomePageProps {
   products: Product[];
   timestamp: number;
-  data: any;
 }
 
-export default function HomePage({ products, timestamp, data }: HomePageProps) {
-  console.log(data);
+export default function HomePage({ products, timestamp }: HomePageProps) {
   return (
     <div>
       <section className={styles.hero}>
