@@ -1,16 +1,13 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../pages/_app';
+import { CartContext } from '../contexts/CartContext';
 import styles from './Header.module.css';
 import { CartIcon } from './cartIcon';
 import Search from './Search';
 
-var GRAPHQL_URL = 'http://localhost:4000/graphql';
-
 export function Header() {
   const router = useRouter();
-  const { cart } = useContext(CartContext);
 
   const isActivePage = (path: string) => {
     return router.pathname.indexOf(path) !== -1;

@@ -2,12 +2,12 @@ import { GetServerSideProps, GetStaticProps } from 'next';
 import ProductCard from '../components/ProductCard';
 import styles from './index.module.css';
 import { fetchGraphQL } from '../utils/fetchGraphQL';
-import { GET_PRODUCTS_QUERY } from '../queries/getProducts';
+import { QUERY_GET_PRODUCTS } from '../queries/getProducts';
 import { Product } from '../types';
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const { products } = await fetchGraphQL<{ products: Product[] }>(
-    GET_PRODUCTS_QUERY,
+    QUERY_GET_PRODUCTS,
     {
       ids: [1, 4, 11, 17],
     },

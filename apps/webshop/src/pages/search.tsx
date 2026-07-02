@@ -7,6 +7,7 @@ import { GetServerSideProps } from 'next';
 import { QUERY_SEARCH_PRODUCTS } from '../queries/searchProducts';
 import { fetchGraphQL } from '../utils/fetchGraphQL';
 import { Product } from '../types';
+import { getQueryParamFromRequest } from '../utils/getQueryParam';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const url = new URL(req.url!, `http://${req.headers.host || 'localhost'}`);
@@ -14,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { searchProducts: products } = await fetchGraphQL<{
     searchProducts: Product[];
   }>(QUERY_SEARCH_PRODUCTS, {
-    q: url.searchParams.get('q') || '',
+    q: getQueryParamFromRequest(req, 'q') || '',
   });
 
   return {
