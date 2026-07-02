@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../_app';
 import styles from './[id].module.css';
+import { formatPrice } from '../../utils/formatPrice';
 
 var GRAPHQL_URL = 'http://localhost:4000/graphql';
 
@@ -43,12 +44,15 @@ export default function ProductPage() {
   const handleAddToCart = () => {
     if (!product) return;
 
-    const currentItems = [...(cart.cart || []), {
-      productId: product.id,
-      name: product.name,
-      price: product.price,
-      quantity: 1,
-    }];
+    const currentItems = [
+      ...(cart.cart || []),
+      {
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+      },
+    ];
     let runningTotal = 0;
     for (let i = 0; i < currentItems.length; i++) {
       runningTotal += currentItems[i].price * currentItems[i].quantity;
@@ -75,16 +79,12 @@ export default function ProductPage() {
     <div className={styles.page}>
       <div className={styles.inner}>
         <div className={styles.imageWrapper}>
-          <img
-            src={product!.imageUrl}
-            alt=""
-            className={styles.image}
-          />
+          <img src={product!.imageUrl} alt="" className={styles.image} />
         </div>
         <div className={styles.details}>
           <p className={styles.category}>{product!.category}</p>
           <h1 className={styles.name}>{product!.name}</h1>
-          <p className={styles.price}>€{product!.price.toFixed(2)}</p>
+          <p className={styles.price}>{formatPrice(product!.price)}</p>
           <p className={styles.description}>{product!.description}</p>
           <p className={styles.meta}>
             Listed: {new Date(product!.createdAt).toLocaleDateString()}

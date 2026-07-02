@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { CartContext } from './_app';
 import styles from './checkout.module.css';
+import { formatPrice } from '../utils/formatPrice';
 
 export default function CheckoutPage() {
   const { cart } = useContext(CartContext) as any;
@@ -15,10 +16,17 @@ export default function CheckoutPage() {
     const tax = subtotals.reduce((a: number, b: number) => a + b * 0.21, 0);
     const shipping = items.reduce(
       (acc: number, item: any) => acc + (item.quantity > 5 ? 0 : 4.95),
-      0
+      0,
     );
 
-    console.log('order total:', total, '| VAT:', tax.toFixed(2), '| shipping:', shipping);
+    console.log(
+      'order total:',
+      total,
+      '| VAT:',
+      tax.toFixed(2),
+      '| shipping:',
+      shipping,
+    );
 
     cart.clearCart();
     setConfirmed(true);
@@ -28,7 +36,10 @@ export default function CheckoutPage() {
     return (
       <div className={styles.confirmation}>
         <h1>Order placed!</h1>
-        <p>Thank you for your order. You will receive a confirmation email shortly.</p>
+        <p>
+          Thank you for your order. You will receive a confirmation email
+          shortly.
+        </p>
         <Link href="/">Continue shopping</Link>
       </div>
     );
@@ -44,7 +55,9 @@ export default function CheckoutPage() {
         {items.length === 0 ? (
           <div className={styles.empty}>
             <p>Your cart is empty.</p>
-            <Link href="/" className={styles.continueLink}>Continue shopping</Link>
+            <Link href="/" className={styles.continueLink}>
+              Continue shopping
+            </Link>
           </div>
         ) : (
           <>
@@ -54,7 +67,7 @@ export default function CheckoutPage() {
                   <span className={styles.itemName}>{item.name}</span>
                   <span className={styles.itemQty}>×{item.quantity}</span>
                   <span className={styles.itemPrice}>
-                    €{(item.price * item.quantity).toFixed(2)}
+                    {formatPrice(item.price * item.quantity)}
                   </span>
                 </div>
               ))}
@@ -64,9 +77,13 @@ export default function CheckoutPage() {
               <div className={styles.total}>
                 <span>Total</span>
                 <strong>
-                  €{items
-                    .reduce((sum: number, item: any) => sum + item.price * item.quantity, 0)
-                    .toFixed(2)}
+                  {formatPrice(
+                    items.reduce(
+                      (sum: number, item: any) =>
+                        sum + item.price * item.quantity,
+                      0,
+                    ),
+                  )}
                 </strong>
               </div>
             </div>
@@ -78,7 +95,9 @@ export default function CheckoutPage() {
               >
                 Place order
               </div>
-              <Link href="/" className={styles.continueLink}>Continue shopping</Link>
+              <Link href="/" className={styles.continueLink}>
+                Continue shopping
+              </Link>
             </div>
           </>
         )}
