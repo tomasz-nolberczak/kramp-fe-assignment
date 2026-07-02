@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import ProductCard from '../components/ProductCard';
 import styles from './index.module.css';
+import Link from 'next/link';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const FEATURED_IDS = ['1', '4', '11', '17'];
@@ -62,7 +63,8 @@ export default function HomePage({ featured, timestamp }: HomePageProps) {
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>Industrial supplies, delivered.</h1>
           <p className={styles.heroSubtitle}>
-            Tools, fasteners, safety equipment and power tools for professionals.
+            Tools, fasteners, safety equipment and power tools for
+            professionals.
           </p>
         </div>
       </section>
@@ -84,11 +86,17 @@ export default function HomePage({ featured, timestamp }: HomePageProps) {
       <section className={styles.categories}>
         <h2>Shop by category</h2>
         <div className={styles.categoryGrid}>
-          {['Tools', 'Fasteners', 'Safety Equipment', 'Power Tools'].map((cat, index) => (
-            <a key={index} href={`/search?q=${cat}`} className={styles.categoryCard}>
-              {cat}
-            </a>
-          ))}
+          {['Tools', 'Fasteners', 'Safety Equipment', 'Power Tools'].map(
+            (cat, index) => (
+              <Link
+                key={index}
+                href={`/search?q=${cat}`}
+                className={styles.categoryCard}
+              >
+                {cat}
+              </Link>
+            ),
+          )}
         </div>
       </section>
     </div>

@@ -54,7 +54,7 @@ export function Header() {
 
         <Search />
 
-        <CartIcon count={cart.totalItems} />
+        <CartIcon />
       </div>
     </header>
   );
