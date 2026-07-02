@@ -57,6 +57,10 @@ export function Header() {
       setIsOpen(false);
     };
     document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      removeEventListener('click', handleOutsideClick);
+    };
   }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
