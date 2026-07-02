@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import styles from './cartIcon.module.css';
-import { CartContext } from '../pages/_app';
 import Link from 'next/link';
+import { useContext } from 'react';
+import { CartContext } from '../pages/_app';
+import styles from './cartIcon.module.css';
 
 export function CartIcon() {
   const { totalItems } = useContext(CartContext);
