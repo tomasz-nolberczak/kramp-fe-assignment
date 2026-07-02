@@ -1,4 +1,4 @@
-const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://localhost:4000/graphql';
+const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://localhost:3000/api/products';
 
 export async function fetchGraphQL<T = unknown>(
   query: string,
