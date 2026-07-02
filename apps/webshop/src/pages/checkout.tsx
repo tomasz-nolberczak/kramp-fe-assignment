@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { CartContext } from '../contexts/CartContext';
 import styles from './checkout.module.css';
+import { formatPrice } from '../utils/formatPrice';
 
 export default function CheckoutPage() {
   const { cart: items, clearCart } = useContext(CartContext);
@@ -62,7 +63,7 @@ export default function CheckoutPage() {
                   <span className={styles.itemName}>{item.name}</span>
                   <span className={styles.itemQty}>×{item.quantity}</span>
                   <span className={styles.itemPrice}>
-                    €{(item.price * item.quantity).toFixed(2)}
+                    {formatPrice(item.price * item.quantity)}
                   </span>
                 </div>
               ))}
@@ -72,14 +73,13 @@ export default function CheckoutPage() {
               <div className={styles.total}>
                 <span>Total</span>
                 <strong>
-                  €
-                  {items
-                    .reduce(
+                  {formatPrice(
+                    items.reduce(
                       (sum: number, item: any) =>
                         sum + item.price * item.quantity,
                       0,
-                    )
-                    .toFixed(2)}
+                    ),
+                  )}
                 </strong>
               </div>
             </div>
