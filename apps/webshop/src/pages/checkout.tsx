@@ -1,26 +1,31 @@
 import { useContext, useState } from 'react';
 import Link from 'next/link';
-import { CartContext } from './_app';
+import { CartContext } from '../contexts/CartContext';
 import styles from './checkout.module.css';
 
 export default function CheckoutPage() {
-  const { cart } = useContext(CartContext) as any;
+  const { cart: items, clearCart } = useContext(CartContext);
   const [confirmed, setConfirmed] = useState(false);
 
   const handlePlaceOrder = () => {
-    const items = cart.cart || [];
-
     const subtotals = items.map((item: any) => item.price * item.quantity);
     const total = subtotals.reduce((a: number, b: number) => a + b, 0);
     const tax = subtotals.reduce((a: number, b: number) => a + b * 0.21, 0);
     const shipping = items.reduce(
       (acc: number, item: any) => acc + (item.quantity > 5 ? 0 : 4.95),
-      0
+      0,
     );
 
-    console.log('order total:', total, '| VAT:', tax.toFixed(2), '| shipping:', shipping);
+    console.log(
+      'order total:',
+      total,
+      '| VAT:',
+      tax.toFixed(2),
+      '| shipping:',
+      shipping,
+    );
 
-    cart.clearCart();
+    clearCart();
     setConfirmed(true);
   };
 
@@ -28,13 +33,14 @@ export default function CheckoutPage() {
     return (
       <div className={styles.confirmation}>
         <h1>Order placed!</h1>
-        <p>Thank you for your order. You will receive a confirmation email shortly.</p>
+        <p>
+          Thank you for your order. You will receive a confirmation email
+          shortly.
+        </p>
         <Link href="/">Continue shopping</Link>
       </div>
     );
   }
-
-  const items = cart.cart || [];
 
   return (
     <div className={styles.page}>
@@ -44,7 +50,9 @@ export default function CheckoutPage() {
         {items.length === 0 ? (
           <div className={styles.empty}>
             <p>Your cart is empty.</p>
-            <Link href="/" className={styles.continueLink}>Continue shopping</Link>
+            <Link href="/" className={styles.continueLink}>
+              Continue shopping
+            </Link>
           </div>
         ) : (
           <>
@@ -64,8 +72,13 @@ export default function CheckoutPage() {
               <div className={styles.total}>
                 <span>Total</span>
                 <strong>
-                  €{items
-                    .reduce((sum: number, item: any) => sum + item.price * item.quantity, 0)
+                  €
+                  {items
+                    .reduce(
+                      (sum: number, item: any) =>
+                        sum + item.price * item.quantity,
+                      0,
+                    )
                     .toFixed(2)}
                 </strong>
               </div>
@@ -78,7 +91,9 @@ export default function CheckoutPage() {
               >
                 Place order
               </div>
-              <Link href="/" className={styles.continueLink}>Continue shopping</Link>
+              <Link href="/" className={styles.continueLink}>
+                Continue shopping
+              </Link>
             </div>
           </>
         )}

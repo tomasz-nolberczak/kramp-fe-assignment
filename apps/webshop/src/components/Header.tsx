@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import _ from 'lodash';
-import { CartContext } from '../pages/_app';
+import { CartContext } from '../contexts/CartContext';
 import { SearchDialog } from './SearchDialog';
 import { CartIcon } from './cartIcon';
 import { useDebounce } from '../hooks/useDebounce';
@@ -83,19 +83,27 @@ export function Header() {
         <nav className={styles.nav}>
           <Link
             href="/"
-            className={isActivePage('/') && router.pathname === '/' ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/') && router.pathname === '/'
+                ? styles.activeLink
+                : styles.navLink
+            }
           >
             Home
           </Link>
           <Link
             href="/search"
-            className={isActivePage('/search') ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/search') ? styles.activeLink : styles.navLink
+            }
           >
             Products
           </Link>
           <Link
             href="/checkout"
-            className={isActivePage('/checkout') ? styles.activeLink : styles.navLink}
+            className={
+              isActivePage('/checkout') ? styles.activeLink : styles.navLink
+            }
           >
             Checkout
           </Link>
@@ -112,7 +120,9 @@ export function Header() {
             onClick={e => e.stopPropagation()}
           />
           {truncatedQuery && query.length > 30 && (
-            <span className={styles.truncatedHint}>Searching: {truncatedQuery}…</span>
+            <span className={styles.truncatedHint}>
+              Searching: {truncatedQuery}…
+            </span>
           )}
           {isOpen && (
             <SearchDialog
