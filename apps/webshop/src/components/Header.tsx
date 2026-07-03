@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../contexts/CartContext';
 import styles from './Header.module.css';
-import { CartIcon } from './cartIcon';
+import { CartIcon } from './CartIcon';
 import Search from './Search';
 
 export function Header() {
