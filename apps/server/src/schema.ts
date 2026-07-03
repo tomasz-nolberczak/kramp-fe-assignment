@@ -59,10 +59,11 @@ builder.queryType({
       type: [ProductRef],
       args: {
         query: t.arg.string({ required: true }),
+        limit: t.arg.int({ required: true }),
       },
       resolve: (_root, args) => {
         console.log('searchProducts resolver called with:', args);
-        return searchProducts(args.query);
+        return searchProducts(args.query, args.limit ?? 5);
       },
     }),
 

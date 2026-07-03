@@ -27,8 +27,9 @@ export default function Search() {
 
     fetchGraphQL<{ searchProducts: Product[] }>(QUERY_SEARCH_PRODUCTS, {
       q: debouncedQuery,
+      limit: 5,
     }).then(data => {
-      setResults(data.searchProducts.slice(0, 5));
+      setResults(data.searchProducts);
     });
   }, [debouncedQuery]);
 

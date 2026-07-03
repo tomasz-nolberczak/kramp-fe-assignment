@@ -32,11 +32,11 @@ export function getProductById(id: string): Product | undefined {
   return all.find(p => p.id === id);
 }
 
-export function searchProducts(query: string): Product[] {
+export function searchProducts(query: string, limit: number): Product[] {
   const all = getAllProducts();
   return all.filter(
     p =>
       p.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
       p.category.toLowerCase().indexOf(query.toLowerCase()) !== -1,
-  );
+  ).slice(0, limit); // Limit to 5 results
 }
