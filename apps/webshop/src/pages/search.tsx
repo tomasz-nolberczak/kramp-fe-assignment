@@ -3,12 +3,12 @@ import ProductCard from '../components/ProductCard';
 import { QUERY_SEARCH_PRODUCTS } from '../queries/searchProducts';
 import { Product } from '../types';
 import { fetchGraphQL } from '../utils/fetchGraphQL';
-import { getQueryParamFromRequest } from '../utils/getQueryParam';
 import { groupBy } from '../utils/groupBy';
 import styles from './search.module.css';
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const q = getQueryParamFromRequest(req, 'q') || '';
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const q = typeof query.q === 'string' ? query.q : query.q?.[0] || '';
+
   const { searchProducts: products } = await fetchGraphQL<{
     searchProducts: Product[];
   }>(QUERY_SEARCH_PRODUCTS, {
