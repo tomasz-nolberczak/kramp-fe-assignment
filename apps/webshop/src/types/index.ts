@@ -4,7 +4,7 @@ export interface Product {
   price: number;
   imageUrl: string;
   description: string;
-  category: string;
+  category: ProductCategory;
   stock: number;
   createdAt: string;
 }
@@ -16,6 +16,11 @@ export interface CartItem {
   quantity: number;
 }
 
-export type SearchResult = any;
+export const productCategories = [
+  'Tools',
+  'Fasteners',
+  'Safety Equipment',
+  'Power Tools',
+] as const;
 
-export type ProductCategory = 'Tools' | 'Fasteners' | 'Safety Equipment' | 'Power Tools';
+export type ProductCategory = (typeof productCategories)[number];

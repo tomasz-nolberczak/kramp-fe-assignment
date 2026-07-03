@@ -10,7 +10,7 @@ import { SearchDialog } from './SearchDialog';
 export default function Search() {
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<Product[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
   const debouncedQuery = useDebounce(query, 300);
@@ -66,7 +66,7 @@ export default function Search() {
       {isOpen && (
         <SearchDialog
           results={results}
-          onSelect={(id: string) => {
+          onSelect={(id: number) => {
             router.push(`/product/${id}`);
             setIsOpen(false);
             setQuery('');

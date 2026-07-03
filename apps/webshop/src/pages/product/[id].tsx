@@ -6,6 +6,7 @@ import { Product } from '../../types';
 import { fetchGraphQL } from '../../utils/fetchGraphQL';
 import { formatPrice } from '../../utils/formatPrice';
 import styles from './[id].module.css';
+import Image from 'next/image';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const productId = params?.id || '';
@@ -86,7 +87,7 @@ export default function ProductPage({ product }: SingleProductParams) {
     <div className={styles.page}>
       <div className={styles.inner}>
         <div className={styles.imageWrapper}>
-          <img src={product!.imageUrl} alt="" className={styles.image} />
+          <Image src={product!.imageUrl} alt="" className={styles.image} />
         </div>
         <div className={styles.details}>
           <p className={styles.category}>{product!.category}</p>

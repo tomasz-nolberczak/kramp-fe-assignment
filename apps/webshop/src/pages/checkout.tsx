@@ -10,6 +10,7 @@ import {
 } from '../utils/pricing';
 import styles from './checkout.module.css';
 import globalStyles from './index.module.css';
+import { CartItem } from '../types';
 
 export default function CheckoutPage() {
   const { cart: items, clearCart } = useContext(CartContext);
@@ -61,8 +62,8 @@ export default function CheckoutPage() {
         ) : (
           <>
             <div className={styles.items}>
-              {items.map((item: any, index: number) => (
-                <div key={index} className={styles.item}>
+              {items.map((item: CartItem, index: number) => (
+                <div key={`checkout-item-${index}`} className={styles.item}>
                   <span className={styles.itemName}>{item.name}</span>
                   <span className={styles.itemQty}>×{item.quantity}</span>
                   <span className={styles.itemPrice}>
