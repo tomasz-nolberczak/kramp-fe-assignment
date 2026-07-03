@@ -6,7 +6,7 @@ import {
   calculateCartShipping,
   calculateCartSubtotal,
   calculateCartTax,
-  VAT_RATE
+  VAT_RATE,
 } from '../utils/pricing';
 import styles from './checkout.module.css';
 import globalStyles from './index.module.css';
