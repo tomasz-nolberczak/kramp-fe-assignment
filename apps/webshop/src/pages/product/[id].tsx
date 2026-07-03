@@ -87,7 +87,14 @@ export default function ProductPage({ product }: SingleProductParams) {
     <div className={styles.page}>
       <div className={styles.inner}>
         <div className={styles.imageWrapper}>
-          <Image src={product!.imageUrl} alt="" className={styles.image} />
+          <Image
+            src={product!.imageUrl}
+            alt={product.name}
+            className={styles.image}
+            width={600}
+            height={400}
+            unoptimized
+          />
         </div>
         <div className={styles.details}>
           <p className={styles.category}>{product!.category}</p>
