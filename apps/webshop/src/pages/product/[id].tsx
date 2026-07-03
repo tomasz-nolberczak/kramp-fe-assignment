@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import { QUERY_GET_PRODUCT } from '../../queries/getProduct';
 import { Product } from '../../types';
@@ -42,6 +42,7 @@ interface SingleProductParams {
 
 export default function ProductPage({ product }: SingleProductParams) {
   const { cart: items, addToCart } = useContext(CartContext);
+  const [added, setAdded] = useState<boolean>(false);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -67,6 +68,10 @@ export default function ProductPage({ product }: SingleProductParams) {
       price: product.price,
       quantity: 1,
     });
+
+    setAdded(true);
+
+    setTimeout(() => setAdded(false), 2000);
   };
 
   if (!product) {
@@ -94,7 +99,7 @@ export default function ProductPage({ product }: SingleProductParams) {
             {product!.stock} in stock
           </p>
           <div className={styles.addToCart} onClick={handleAddToCart}>
-            Add to cart
+            {added ? 'Added!' : 'Add to cart'}
           </div>
         </div>
       </div>

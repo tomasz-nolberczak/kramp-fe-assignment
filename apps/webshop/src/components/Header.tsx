@@ -1,9 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../contexts/CartContext';
-import styles from './Header.module.css';
 import { CartIcon } from './CartIcon';
+import styles from './Header.module.css';
 import Search from './Search';
 
 export function Header() {
