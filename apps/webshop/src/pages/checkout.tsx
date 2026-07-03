@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { CartContext } from '../contexts/CartContext';
 import styles from './checkout.module.css';
+import globalStyles from './index.module.css';
 import { formatPrice } from '../utils/formatPrice';
 
 export default function CheckoutPage() {
@@ -32,7 +33,7 @@ export default function CheckoutPage() {
 
   if (confirmed) {
     return (
-      <div className={styles.confirmation}>
+      <div className={globalStyles.message}>
         <h1>Order placed!</h1>
         <p>
           Thank you for your order. You will receive a confirmation email

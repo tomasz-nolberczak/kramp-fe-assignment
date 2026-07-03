@@ -1,19 +1,19 @@
-import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../../contexts/CartContext';
-import styles from './[id].module.css';
-import { formatPrice } from '../../utils/formatPrice';
 import { GetServerSideProps } from 'next';
+import { useContext } from 'react';
+import { CartContext } from '../../contexts/CartContext';
+import { QUERY_GET_PRODUCT } from '../../queries/getProduct';
 import { Product } from '../../types';
 import { fetchGraphQL } from '../../utils/fetchGraphQL';
-import { QUERY_GET_PRODUCT } from '../../queries/getProduct';
-import { notFound } from 'next/navigation';
+import { formatPrice } from '../../utils/formatPrice';
+import styles from './[id].module.css';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const productId = params?.id || '';
 
   if (!productId) {
-    return notFound();
+    return {
+      notFound: true,
+    };
   }
 
   const { product } = await fetchGraphQL<{ product: Product }>(
@@ -22,6 +22,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       id: productId,
     },
   );
+
+  if (!product) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {

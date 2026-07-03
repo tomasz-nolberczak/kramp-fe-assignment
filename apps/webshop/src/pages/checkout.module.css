@@ -98,25 +98,3 @@
   color: #666;
 }
 
-.confirmation {
-  max-width: 640px;
-  margin: 80px auto;
-  padding: 48px 24px;
-  text-align: center;
-}
-
-.confirmation h1 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.confirmation p {
-  color: #666;
-  margin-bottom: 24px;
-}
-
-.confirmation a {
-  color: #e63329;
-  font-weight: 600;
-}
