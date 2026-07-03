@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useContext } from 'react';
 import { CartContext } from '../contexts/CartContext';
-import styles from './CartIcon.module.css';
+import styles from './cartIcon.module.css';
 
 export function CartIcon() {
   const cartContext = useContext(CartContext);

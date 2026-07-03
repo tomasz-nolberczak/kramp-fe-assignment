@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { CartIcon } from './CartIcon';
+import { CartIcon } from './cartIcon';
 import styles from './Header.module.css';
 import Search from './Search';
 
