@@ -1,22 +1,24 @@
-import { useContext, useState } from 'react';
 import Link from 'next/link';
+import { useContext, useState } from 'react';
 import { CartContext } from '../contexts/CartContext';
+import { formatPrice } from '../utils/formatPrice';
+import {
+  calculateCartShipping,
+  calculateCartSubtotal,
+  calculateCartTax,
+  VAT_RATE
+} from '../utils/pricing';
 import styles from './checkout.module.css';
 import globalStyles from './index.module.css';
-import { formatPrice } from '../utils/formatPrice';
 
 export default function CheckoutPage() {
   const { cart: items, clearCart } = useContext(CartContext);
   const [confirmed, setConfirmed] = useState(false);
 
   const handlePlaceOrder = () => {
-    const subtotals = items.map((item: any) => item.price * item.quantity);
-    const total = subtotals.reduce((a: number, b: number) => a + b, 0);
-    const tax = subtotals.reduce((a: number, b: number) => a + b * 0.21, 0);
-    const shipping = items.reduce(
-      (acc: number, item: any) => acc + (item.quantity > 5 ? 0 : 4.95),
-      0,
-    );
+    const total = calculateCartSubtotal(items);
+    const tax = calculateCartTax(items);
+    const shipping = calculateCartShipping(items);
 
     console.log(
       'order total:',
@@ -73,15 +75,15 @@ export default function CheckoutPage() {
             <div className={styles.summary}>
               <div className={styles.total}>
                 <span>Total</span>
-                <strong>
-                  {formatPrice(
-                    items.reduce(
-                      (sum: number, item: any) =>
-                        sum + item.price * item.quantity,
-                      0,
-                    ),
-                  )}
-                </strong>
+                <strong>{formatPrice(calculateCartSubtotal(items))}</strong>
+              </div>
+              <div className={styles.total}>
+                <span>VAT ({(VAT_RATE * 100).toFixed(0)}%)</span>
+                <strong>{formatPrice(calculateCartTax(items))}</strong>
+              </div>
+              <div className={styles.total}>
+                <span>Shipping</span>
+                <strong>{formatPrice(calculateCartShipping(items))}</strong>
               </div>
             </div>
 
