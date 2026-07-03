@@ -1,29 +1,32 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { CartItem } from '../types';
+import { CartContextProps } from '../contexts/CartContext';
 
-const stored: CartItem[] =
-  typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('cart') || '[]')
-    : [];
-
-export function useCart() {
-  const [cart, setCart] = useState<CartItem[]>(stored);
+export function useCart(): CartContextProps {
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedCart = JSON.parse(
+        localStorage.getItem('cart') || '[]',
+      ) as CartItem[];
+      setCart(storedCart);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
     const total = cart.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0,
     );
     setTotalPrice(total);
   }, [cart]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('cart', JSON.stringify(cart));
-    }
-  });
 
   const addToCart = (
     item: Omit<CartItem, 'productId'> & { productId: string },
